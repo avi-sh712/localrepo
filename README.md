@@ -1,55 +1,95 @@
-graph TD
-    %% Styling
-    classDef ui fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef logic fill:#fff3e0,stroke:#ff6f00,stroke-width:2px,stroke-dasharray: 5 5;
-    classDef core fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    classDef infra fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
-    classDef user fill:#ffffff,stroke:#000000,stroke-width:2px;
+# 🧠 Sidekick Agent (LangGraph)
 
-    subgraph User_Layer [User Interface Layer]
-        User((👤 Security Engineer)):::user
-        Dashboard[💻 Gradio Dashboard<br/><i>Async UI</i>]:::ui
-    end
+A personal **agentic sidekick** built using **LangGraph** and **LangChain**, designed to assist with research, browsing, automation, and self-directed reasoning.  
+This project is **actively under development** and currently optimized for **cost-effective experimentation** using lightweight LLMs.
 
-    subgraph Orchestration_Layer [LangGraph Orchestration Engine]
-        direction TB
-        Start((🚀 Start))
-        Monitor[🕵️ Monitor Agent<br/><i>Role: Scanner</i>]:::core
-        Verifier[⚖️ Verifier Agent<br/><i>Role: Analyst</i>]:::core
-        Gate{⚠️ HITL Approval<br/><i>Interrupt</i>}:::logic
-        Fixer[🛠️ Fixer Agent<br/><i>Role: Remediation</i>]:::core
-    end
+---
 
-    subgraph MCP_Layer [Model Context Protocol]
-        MCPServer[🔌 MCP Server<br/><i>Stdio Subprocess</i>]:::infra
-        Tools[🧰 AWS Tools<br/><i>Boto3 SDK</i>]:::infra
-    end
+## ✨ What is this project?
 
-    subgraph Cloud_Layer [AWS Infrastructure]
-        AWS_S3[(🪣 S3 Buckets)]:::infra
-        AWS_EC2[🖥️ EC2 Instances]:::infra
-    end
+This Sidekick Agent is an **LLM-powered autonomous assistant** that can:
+- Search the web
+- Browse pages like a real user
+- Execute Python code on its own
+- Manage files
+- Notify me proactively
+- **Verify its own work** via a dedicated Reviewer Agent
+- Interact via a simple frontend
 
-    %% Data Flow
-    User -->|Click 'Scan'| Dashboard
-    Dashboard -->|Trigger Workflow| Start
-    Start --> Monitor
-    
-    %% Monitoring Flow
-    Monitor <-->|MCP: list_resources| MCPServer
-    MCPServer <-->|Read-Only API| AWS_S3
-    MCPServer <-->|Read-Only API| AWS_EC2
-    Monitor -->|Raw Findings| Verifier
+All of this is orchestrated using **LangGraph**, enabling structured, multi-step agent workflows rather than simple prompt chains.
 
-    %% Verification Flow
-    Verifier -->|Analysis Report| Gate
-    Gate -.->|Pause Execution| Dashboard
-    Dashboard -->|User Reviews| User
-    User -->|Click 'Approve'| Dashboard
-    Dashboard -->|Resume Workflow| Gate
+---
 
-    %% Fixing Flow
-    Gate -->|Approved?| Fixer
-    Fixer <-->|MCP: enable_security| MCPServer
-    MCPServer -->|Write API| AWS_S3
-    Fixer -->|Final Report| Dashboard
+## 🤖 Agent Core
+- **Framework:** Built with **LangGraph** for stateful orchestration.
+- **Multi-Agent Logic:** Features a **Primary Agent** for task execution and a **Reviewer Agent** for verification.
+- **Verification Layer:** The Reviewer Agent intercepts the final output, cross-references it with the initial query, and ensures the answer is accurate and complete before delivery.
+- **Model:** Currently powered by **`gpt-4o-mini`** (flexible and cost-efficient).
+
+---
+
+## 📊 Output Gallery
+Query	Sidekick Response	Reviewer Verdict	Evidence (Screen & Pushover)
+"Find the latest price of BTC and check wikipedia for it"	"BTC is currently at $X..."	✅ Verified	<img src="https://github.com/user-attachments/assets/183c0703-d082-4a53-afe7-a758b6a5c397" width="400">
+"Find an interesting topic on wikipedia and give me a brief intro"	"Introduction to Artificial Intelligence..."	✅ Verified	<img src="https://github.com/user-attachments/assets/56cfd2c8-5b9d-412e-86e1-101305548efb" width="400">
+"List good hotels in NYC and send me pushover notifications"	"Found 5 top-rated hotels..."	✅ Verified	
+<img src="https://github.com/user-attachments/assets/e9c47521-0bb8-428d-b51b-64edc25b66a0" width="400">
+
+
+<img src="https://github.com/user-attachments/assets/2f03d026-4e68-44fc-bd45-187deb2ca490" width="180"> <img src="https://github.com/user-attachments/assets/f050b65e-6669-483a-bacc-ae1c429f12f0" width="180">
+
+---
+
+## 🧰 Tools Available to the Agent
+
+The agent currently has access to the following tools:
+
+- **🔔 Pushover Notification Tool**
+  - Sends real-time personal notifications using a Pushover key
+- **🌐 Google Search (Serper API)**
+  - Fast, structured Google search results via Serper
+- **🧭 Browser Automation**
+  - Uses **Microsoft Playwright** (Chromium) for realistic web browsing
+- **📚 Wikipedia Tool**
+  - For factual lookups and background information
+- **🐍 Python REPL Tool**
+  - Allows the agent to execute Python code autonomously
+- **📁 File Management System**
+  - Enables reading, writing, and managing files as part of workflows
+
+---
+
+## 🖥️ Frontend
+- Simple **Gradio UI**
+- Enables direct interaction with the agent during development and testing
+
+---
+
+## ⚙️ Model Strategy
+- **Default model:** GPT-4o-mini
+- Designed to easily switch between cheaper models for testing and powerful models for advanced reasoning.
+
+---
+
+## 🧪 Under Active Development
+- 📧 **Email Tool:** Send and read emails via the agent.
+- 📄 **PDF Reader Tool:** Allow the agent to summarize and reason over PDFs.
+- 🧠 **Automatic RAG Pipeline:** Build and update a retrieval knowledge base dynamically.
+- 💾 **Long-Term Memory:** Persist context using `MemorySaver` checkpoints.
+- 🔄 **Improved Routing:** Smarter decision-making between browsing, searching, or internal reasoning.
+
+---
+
+## 🛠️ Tech Stack
+- **Python**
+- **LangGraph** & **LangChain**
+- **OpenAI API**
+- **Gradio**
+- **Playwright (Chromium)**
+- **Serper API** & **Pushover**
+- **uv** (Dependency management)
+
+---
+
+## 🔐 Environment Variables
+This project relies on environment variables for secrets. A sample file is provided in `.env.example`.
