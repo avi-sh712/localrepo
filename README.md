@@ -18,50 +18,48 @@ This Sidekick Agent is an **LLM-powered autonomous assistant** that can:
 
 All of this is orchestrated using **LangGraph**, enabling structured, multi-step agent workflows rather than simple prompt chains.
 
----
 
-## 🤖 Agent Core
-- **Framework:** Built with **LangGraph** for stateful orchestration.
-- **Multi-Agent Logic:** Features a **Primary Agent** for task execution and a **Reviewer Agent** for verification.
-- **Verification Layer:** The Reviewer Agent intercepts the final output, cross-references it with the initial query, and ensures the answer is accurate and complete before delivery.
-- **Model:** Currently powered by **`gpt-4o-mini`** (flexible and cost-efficient).
 
 ---
 
 ## 📊 Output Gallery
-Query	Sidekick Response	Reviewer Verdict	Evidence (Screen & Pushover)
-"Find the latest price of BTC and check wikipedia for it"	"BTC is currently at $X..."	✅ Verified	<img src="https://github.com/user-attachments/assets/183c0703-d082-4a53-afe7-a758b6a5c397" width="400">
-"Find an interesting topic on wikipedia and give me a brief intro"	"Introduction to Artificial Intelligence..."	✅ Verified	<img src="https://github.com/user-attachments/assets/56cfd2c8-5b9d-412e-86e1-101305548efb" width="400">
-"List good hotels in NYC and send me pushover notifications"	"Found 5 top-rated hotels..."	✅ Verified	
-<img src="https://github.com/user-attachments/assets/e9c47521-0bb8-428d-b51b-64edc25b66a0" width="400">
 
+| Query | Sidekick Response | Reviewer Verdict | Evidence (Screen & Pushover) |
+| :--- | :--- | :---: | :--- |
+| "Find the latest price of BTC and check wikipedia for it" | "BTC is currently at $X..." | ✅ **Verified** | <img src="https://github.com/user-attachments/assets/183c0703-d082-4a53-afe7-a758b6a5c397" width="450"> |
+| "Find an interesting topic on wikipedia and give me a brief intro" | "Introduction to Artificial Intelligence..." | ✅ **Verified** | <img src="https://github.com/user-attachments/assets/56cfd2c8-5b9d-412e-86e1-101305548efb" width="450"> |
+| "List good hotels in NYC and send me pushover notifications" | "Found 5 top-rated hotels..." | ✅ **Verified** | <img src="https://github.com/user-attachments/assets/e9c47521-0bb8-428d-b51b-64edc25b66a0" width="450"> <br><br> **Mobile Notifications:** <br> <img src="https://github.com/user-attachments/assets/2f03d026-4e68-44fc-bd45-187deb2ca490" width="180"> <img src="https://github.com/user-attachments/assets/f050b65e-6669-483a-bacc-ae1c429f12f0" width="180"> |
 
-<img src="https://github.com/user-attachments/assets/2f03d026-4e68-44fc-bd45-187deb2ca490" width="180"> <img src="https://github.com/user-attachments/assets/f050b65e-6669-483a-bacc-ae1c429f12f0" width="180">
+---
+
+## 🤖 Agent Core
+- **Framework:** Built with **LangGraph** for stateful, cyclic orchestration.
+- **Multi-Agent Logic:** Features a **Primary Agent** for task execution and a **Reviewer Agent** for final verification.
+- **Verification Layer:** The Reviewer Agent intercepts the output, checks it against the original user query, and confirms accuracy before the final response is delivered.
+- **Model:** Optimized for **`gpt-4o-mini`** to ensure high-speed reasoning with minimal API costs.
 
 ---
 
 ## 🧰 Tools Available to the Agent
 
-The agent currently has access to the following tools:
-
 - **🔔 Pushover Notification Tool**
-  - Sends real-time personal notifications using a Pushover key
+  - Sends real-time personal notifications using a Pushover key.
 - **🌐 Google Search (Serper API)**
-  - Fast, structured Google search results via Serper
+  - Fast, structured Google search results via Serper.
 - **🧭 Browser Automation**
-  - Uses **Microsoft Playwright** (Chromium) for realistic web browsing
+  - Uses **Microsoft Playwright** (Chromium) for realistic web browsing and scraping.
 - **📚 Wikipedia Tool**
-  - For factual lookups and background information
+  - For factual lookups and background information.
 - **🐍 Python REPL Tool**
-  - Allows the agent to execute Python code autonomously
+  - Allows the agent to execute Python code autonomously for calculations or data processing.
 - **📁 File Management System**
-  - Enables reading, writing, and managing files as part of workflows
+  - Enables reading, writing, and managing local files as part of workflows.
 
 ---
 
 ## 🖥️ Frontend
 - Simple **Gradio UI**
-- Enables direct interaction with the agent during development and testing
+- Enables direct interaction with the agent during development and testing.
 
 ---
 
@@ -87,7 +85,7 @@ The agent currently has access to the following tools:
 - **Gradio**
 - **Playwright (Chromium)**
 - **Serper API** & **Pushover**
-- **uv** (Dependency management)
+- **uv** (for dependency management)
 
 ---
 
